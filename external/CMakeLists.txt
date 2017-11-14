@@ -54,18 +54,3 @@ target_link_libraries(GLEW_1130
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
 )
-
-
-
-### BULLET ###
-# Bullet already has a CMakeLists.txt so let's use these
-
-set(BULLET_VERSION 2.81)
-include_directories(
-	bullet-2.81-rev2613/src
-)
-add_subdirectory( bullet-2.81-rev2613/src/BulletSoftBody )
-add_subdirectory( bullet-2.81-rev2613/src/BulletCollision )
-add_subdirectory( bullet-2.81-rev2613/src/BulletDynamics )
-add_subdirectory( bullet-2.81-rev2613/src/LinearMath )
-
