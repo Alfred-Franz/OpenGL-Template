@@ -56,6 +56,7 @@ add_definitions(
 # User playground
 add_executable(playground 
 	playground/playground.cpp
+	playground/playground.h
 	playground/SimpleFragmentShader.fragmentshader
 	playground/SimpleVertexShader.vertexshader
 	common/shader.cpp
