@@ -58,7 +58,7 @@ void updateAnimationLoop()
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
   glVertexAttribPointer(
     0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-    vertexbuffer_size,  // size
+    3,  // size
     GL_FLOAT,           // type
     GL_FALSE,           // normalized?
     0,                  // stride
@@ -66,7 +66,7 @@ void updateAnimationLoop()
   );
 
   // Draw the triangle !
-  glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
+  glDrawArrays(GL_TRIANGLES, 0, vertexbuffer_size); // 3 indices starting at 0 -> 1 triangle
 
   glDisableVertexAttribArray(0);
 
