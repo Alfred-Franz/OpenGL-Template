@@ -3,6 +3,7 @@
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
 // Include GLFW
 #include <glfw3.h>
@@ -92,7 +93,7 @@ bool initializeWindow()
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // Open a window and create its OpenGL context
-  window = glfwCreateWindow(1024, 768, "Tutorial 02 - Red triangle", NULL, NULL);
+  window = glfwCreateWindow(600, 600, "Tutorial 02 - Red triangle", NULL, NULL);
   if (window == NULL) {
     fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
     getchar();
@@ -123,16 +124,16 @@ bool initializeVertexbuffer()
   glGenVertexArrays(1, &VertexArrayID);
   glBindVertexArray(VertexArrayID);
 
-  vertexbuffer_size = 3;
-  static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f, -1.0f, 0.0f,
-    1.0f, -1.0f, 0.0f,
-    0.0f,  1.0f, 0.0f,
-  };
+  std::vector< glm::vec3 > vertices = std::vector< glm::vec3 >();
+
+  vertices.push_back({ -1.0f, -1.0f, 0.0f });
+  vertices.push_back({ 1.0f, -1.0f, 0.0f });
+  vertices.push_back({ 0.0f,  1.0f, 0.0f });
+  vertexbuffer_size = vertices.size() * sizeof(glm::vec3);
 
   glGenBuffers(1, &vertexbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexbuffer_size, &vertices[0], GL_STATIC_DRAW);
 
   return true;
 }
