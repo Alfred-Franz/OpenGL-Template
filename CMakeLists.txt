@@ -21,7 +21,7 @@ endif()
 add_subdirectory (external)
 
 # On Visual 2005 and above, this module can set the debug working directory
-cmake_policy(SET CMP0026 OLD)
+cmake_policy(SET CMP0026 NEW)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/external/rpavlik-cmake-modules-fe2273")
 include(CreateLaunchers)
 include(MSVCMultipleProcessCompile) # /MP
