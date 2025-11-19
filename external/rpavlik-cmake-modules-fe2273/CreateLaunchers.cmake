@@ -321,7 +321,7 @@ macro(_launcher_create_target_launcher)
             "${_launchermoddir}/targetlauncher.${_suffix}.in"
             "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/launch-${_targetname}.${_suffix}"
             "${CMAKE_CURRENT_BINARY_DIR}/launch-${_targetname}.${_suffix}"
-            ${CMAKE_BUILD_TYPE})
+            "${CMAKE_BUILD_TYPE}")
     endif()
 endmacro()
 

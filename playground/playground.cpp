@@ -82,7 +82,7 @@ bool initializeWindow()
   if (!glfwInit())
   {
     fprintf(stderr, "Failed to initialize GLFW\n");
-    getchar();
+    char c = getchar();
     return false;
   }
 
@@ -96,7 +96,7 @@ bool initializeWindow()
   window = glfwCreateWindow(600, 600, "Tutorial 02 - Red triangle", NULL, NULL);
   if (window == NULL) {
     fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
-    getchar();
+    char c = getchar();
     glfwTerminate();
     return false;
   }
@@ -106,7 +106,7 @@ bool initializeWindow()
   glewExperimental = true; // Needed for core profile
   if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Failed to initialize GLEW\n");
-    getchar();
+    char c = getchar();
     glfwTerminate();
     return false;
   }
@@ -129,7 +129,7 @@ bool initializeVertexbuffer()
   vertices.push_back({ -1.0f, -1.0f, 0.0f });
   vertices.push_back({ 1.0f, -1.0f, 0.0f });
   vertices.push_back({ 0.0f,  1.0f, 0.0f });
-  vertexbuffer_size = vertices.size() * sizeof(glm::vec3);
+  vertexbuffer_size = (GLuint)vertices.size() * (GLuint)sizeof(glm::vec3);
 
   glGenBuffers(1, &vertexbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
