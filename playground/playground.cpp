@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <iostream>
+#include <time.h>
 
 // Include GLFW
 #include <glfw3.h>
@@ -30,7 +32,7 @@ int main( void )
 
 	//start animation loop until escape key is pressed
 	do{
-
+    initializeVertexbuffer(); //hack: reinitialize vertex buffer every iteration
     updateAnimationLoop();
 
 	} // Check if the ESC key was pressed or the window was closed
@@ -124,11 +126,32 @@ bool initializeVertexbuffer()
   glGenVertexArrays(1, &VertexArrayID);
   glBindVertexArray(VertexArrayID);
 
+  glm::vec2 triangleVertice1 = glm::vec2(-0.05f, -0.05f);
+  glm::vec2 triangleVertice2 = glm::vec2(0.05f, -0.05f);
+  glm::vec2 triangleVertice3 = glm::vec2(0.0f, 0.8f);
+
+  time_t seconds;
+  seconds = time(NULL); //Gives seconds since Epoch (e.g., 1 Jan 1970)
+  if (seconds_last != (seconds % 60)) {
+    std::cout << "Seconds: " << (seconds % 60) << std::endl; //(seconds % 60) gives the second of current minute 
+    seconds_last = (seconds % 60);
+  }
+  float secondRad = (seconds % 60) / 60.0 * (3.14 * 2.0); //conversion to radiants
+
+  glm::mat2 myR = glm::mat2(cos(secondRad), -sin(secondRad),
+                          sin(secondRad), cos(secondRad));
+
+  glm::vec2 myT = glm::vec2(0.0f, 0.0f);
+
+  triangleVertice1 = myR * triangleVertice1 + myT;
+  triangleVertice2 = myR * triangleVertice2 + myT;
+  triangleVertice3 = myR * triangleVertice3 + myT;
+
   std::vector< glm::vec3 > vertices = std::vector< glm::vec3 >();
 
-  vertices.push_back({ -1.0f, -1.0f, 0.0f });
-  vertices.push_back({ 1.0f, -1.0f, 0.0f });
-  vertices.push_back({ 0.0f,  1.0f, 0.0f });
+  vertices.push_back({ triangleVertice1[0], triangleVertice1[1], 0.0f });
+  vertices.push_back({ triangleVertice2[0], triangleVertice2[1], 0.0f });
+  vertices.push_back({ triangleVertice3[0], triangleVertice3[1], 0.0f });
   vertexbuffer_size = (GLuint)vertices.size() * (GLuint)sizeof(glm::vec3);
 
   glGenBuffers(1, &vertexbuffer);

@@ -12,6 +12,8 @@ GLuint vertexbuffer_size;
 //program ID of the shaders, required for handling the shaders with OpenGL
 GLuint programID;
 
+//Storing the seconds for output
+int seconds_last;
 
 int main( void ); //<<< main function, called at startup
 void updateAnimationLoop(); //<<< updates the animation loop
