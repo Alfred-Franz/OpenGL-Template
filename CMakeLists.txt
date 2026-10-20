@@ -59,8 +59,12 @@ add_executable(playground
 	playground/playground.h
 	playground/SimpleFragmentShader.fragmentshader
 	playground/SimpleVertexShader.vertexshader
+	playground/TextureFragmentShader.fragmentshader
+	playground/TextureVertexShader.vertexshader
 	common/shader.cpp
 	common/shader.hpp
+	common/texture.cpp
+	common/texture.hpp
 )
 target_link_libraries(playground
 	${ALL_LIBS}
