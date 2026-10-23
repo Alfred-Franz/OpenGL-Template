@@ -1,0 +1,18 @@
+#version 330 core
+
+// Interpolated texture coordinate from the vertex shader
+in vec2 UV;
+
+// Ouput data
+out vec3 color;
+
+// The texture that is currently bound (set from the C++ code)
+uniform sampler2D myTextureSampler;
+
+void main()
+{
+
+	// Output color = color of the texture at the given UV coordinate
+	color = texture(myTextureSampler, UV).rgb;
+
+}
