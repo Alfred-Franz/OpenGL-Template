@@ -24,11 +24,13 @@ int main( void )
   bool windowInitialized = initializeWindow();
   if (!windowInitialized) return -1;
 
-  //Initialize vertex buffer
+  //Generate vertex arrays and initialize vertex buffer
+  glGenVertexArrays(1, &VertexArrayID);
+  glBindVertexArray(VertexArrayID);
   bool vertexbufferInitialized = initializeVertexbuffer();
   if (!vertexbufferInitialized) return -1;
 
-  //NEW: Initialize the buffers that never change (UVs of the hand, background quad)
+  //NEW: Initialize the buffers that never change (UVs of the hand and the background)
   initializeUVbuffer();
 
   // Create and compile our GLSL program from the shaders
@@ -42,9 +44,10 @@ int main( void )
 
 	//start animation loop until escape key is pressed
 	do{
+    glDeleteBuffers(1, &vertexbuffer); //clean up buffers before redrawing: avoids memory leaks caused by the hack
+    glDeleteBuffers(1, &backgroundVertexbuffer); //clean up buffers before redrawing: avoids memory leaks caused by the hack
     initializeVertexbuffer(); //hack: reinitialize vertex buffer every iteration
     updateAnimationLoop();
-
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 );
@@ -160,9 +163,6 @@ bool initializeWindow()
 
 bool initializeVertexbuffer()
 {
-  glGenVertexArrays(1, &VertexArrayID);
-  glBindVertexArray(VertexArrayID);
-
   glm::vec2 triangleVertice1 = glm::vec2(-0.05f, -0.05f);
   glm::vec2 triangleVertice2 = glm::vec2(0.05f, -0.05f);
   glm::vec2 triangleVertice3 = glm::vec2(0.0f, 0.8f);
