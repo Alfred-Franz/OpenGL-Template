@@ -1,6 +1,14 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
+/** In this example, textures were added to the simple clock. 
+ *  All changes required for the textures are marked with “NEW” 
+ *  in the comments. Don’t forget to specify the new files in 
+ *  CMake if you want to try out the example.
+ *
+ *  Created by Alfred Franz with AI assistance from Claude Opus 5.5
+ */
+
 // Include GLEW
 #include <GL/glew.h>
 
