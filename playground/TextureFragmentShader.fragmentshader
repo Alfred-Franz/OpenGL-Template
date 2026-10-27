@@ -12,7 +12,15 @@ uniform sampler2D myTextureSampler;
 void main()
 {
 
-	// Output color = color of the texture at the given UV coordinate
-	color = texture(myTextureSampler, UV).rgb;
+	// Color of the texture at the given UV coordinate
+	vec3 texColor = texture(myTextureSampler, UV).rgb;
+
+	// Simulated alpha channel ("color key"): white pixels count as transparent.
+	// discard throws the fragment away, so whatever was drawn before (the clock face) stays visible.
+	// Note: the clock face itself must not contain pure white, otherwise it gets holes as well.
+	if (texColor.r > 0.95 && texColor.g > 0.95 && texColor.b > 0.95)
+		discard;
+
+	color = texColor;
 
 }
