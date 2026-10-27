@@ -32,7 +32,6 @@ void updateAnimationLoop(); //<<< updates the animation loop
 bool initializeWindow(); //<<< initializes the window using GLFW and GLEW
 bool initializeVertexbuffer(); //<<< initializes the vertex buffer array and binds it OpenGL
 bool initializeUVbuffer(); //<<< NEW: initializes the texture coordinates of the clock hand
-bool initializeBackground(); //<<< NEW: initializes vertex and UV buffer of the background quad
 bool initializeTextures(); //<<< NEW: loads the two textures from BMP files
 void drawTextured(GLuint vbo, GLuint uvbo, GLuint texture, int vertexCount); //<<< NEW: draws triangles with a texture
 bool cleanupVertexbuffer(); //<<< frees all recources from the vertex buffer

@@ -30,7 +30,6 @@ int main( void )
 
   //NEW: Initialize the buffers that never change (UVs of the hand, background quad)
   initializeUVbuffer();
-  initializeBackground();
 
   // Create and compile our GLSL program from the shaders
   // NEW: shaders with texture support (the old Simple*Shader files are no longer used)
@@ -196,14 +195,34 @@ bool initializeVertexbuffer()
   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
   glBufferData(GL_ARRAY_BUFFER, vertexbuffer_size, &vertices[0], GL_STATIC_DRAW);
 
+  //NEW: Background quad covering the whole window (x and y from -1 to 1), built from two triangles.    
+  std::vector< glm::vec3 > vertices_back = std::vector< glm::vec3 >();
+  
+  // triangle 1: lower left, lower right, upper right
+  vertices_back.push_back({ -1.0f, -1.0f, 0.0f }); 
+  vertices_back.push_back({  1.0f, -1.0f, 0.0f });
+  vertices_back.push_back({  1.0f,  1.0f, 0.0f });
+  // triangle 2: lower left, upper right, upper left
+  vertices_back.push_back({ -1.0f, -1.0f, 0.0f }); 
+  vertices_back.push_back({  1.0f,  1.0f, 0.0f });
+  vertices_back.push_back({ -1.0f,  1.0f, 0.0f }); 
+
+  glGenBuffers(1, &backgroundVertexbuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, backgroundVertexbuffer);
+  glBufferData(GL_ARRAY_BUFFER, vertices_back.size() * sizeof(glm::vec3), &vertices_back[0], GL_STATIC_DRAW);
+
   return true;
 }
 
-//NEW: UV coordinates of the hand. One (u,v) per vertex, in the same order as the vertices.
-//     (0,0) is the lower left corner of the image, (1,1) the upper right corner.
-//     The UVs belong to the triangle, not to the screen: the texture rotates with the hand.
+//NEW: UV coordinates of the hand and the background. 
+//     Details on the hand mapping: 
+//       * One (u,v) per vertex, in the same order as the vertices.
+//       * (0,0) is the lower left corner of the image, (1,1) the upper right corner.
+//       * The UVs belong to the triangle, not to the screen: the texture rotates with the hand.
+//      Background UV mapping: Its UVs map the full image (0..1) onto the window.
 bool initializeUVbuffer()
 {
+  // ## UV buffer for the clock hand ##
   std::vector< glm::vec2 > uvs = std::vector< glm::vec2 >();
   uvs.push_back({ 0.0f, 0.0f }); // vertex 1: lower left  -> lower left of the image
   uvs.push_back({ 1.0f, 0.0f }); // vertex 2: lower right -> lower right of the image
@@ -212,32 +231,22 @@ bool initializeUVbuffer()
   glGenBuffers(1, &uvbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
   glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
-  return true;
-}
 
-//NEW: Background quad covering the whole window (x and y from -1 to 1), built from two triangles.
-//     Its UVs map the full image (0..1) onto the window.
-bool initializeBackground()
-{
-  std::vector< glm::vec3 > vertices = std::vector< glm::vec3 >();
-  std::vector< glm::vec2 > uvs = std::vector< glm::vec2 >();
-
-  // triangle 1: lower left, lower right, upper right
-  vertices.push_back({ -1.0f, -1.0f, 0.0f }); uvs.push_back({ 0.0f, 0.0f });
-  vertices.push_back({  1.0f, -1.0f, 0.0f }); uvs.push_back({ 1.0f, 0.0f });
-  vertices.push_back({  1.0f,  1.0f, 0.0f }); uvs.push_back({ 1.0f, 1.0f });
-  // triangle 2: lower left, upper right, upper left
-  vertices.push_back({ -1.0f, -1.0f, 0.0f }); uvs.push_back({ 0.0f, 0.0f });
-  vertices.push_back({  1.0f,  1.0f, 0.0f }); uvs.push_back({ 1.0f, 1.0f });
-  vertices.push_back({ -1.0f,  1.0f, 0.0f }); uvs.push_back({ 0.0f, 1.0f });
-
-  glGenBuffers(1, &backgroundVertexbuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, backgroundVertexbuffer);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+  // ## UV buffer for the background ##
+  std::vector< glm::vec2 > uvs_back = std::vector< glm::vec2 >();
+  // First triangle of background:
+  uvs_back.push_back({ 0.0f, 0.0f });
+  uvs_back.push_back({ 1.0f, 0.0f });
+  uvs_back.push_back({ 1.0f, 1.0f });
+  // Second triangle of background:
+  uvs_back.push_back({ 0.0f, 0.0f });
+  uvs_back.push_back({ 1.0f, 1.0f });
+  uvs_back.push_back({ 0.0f, 1.0f });
 
   glGenBuffers(1, &backgroundUVbuffer);
   glBindBuffer(GL_ARRAY_BUFFER, backgroundUVbuffer);
-  glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, uvs_back.size() * sizeof(glm::vec2), &uvs_back[0], GL_STATIC_DRAW);
+
   return true;
 }
 
